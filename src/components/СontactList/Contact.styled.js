@@ -7,6 +7,6 @@ const ContactWrapper = styled.div`
 `;
 
 const ContactData = styled.p`
-  font-size: 18px;
+  font-size: 20px;
 `;
 export { ContactWrapper, ContactData };
