@@ -6,7 +6,7 @@ import {
 } from 'formik';
 
 export const ErrorMessage = styled(FormikErrorMessage)`
-  color: red;
+  color: teal;
 `;
 export const Form = styled(FormikForm)`
   display: flex;

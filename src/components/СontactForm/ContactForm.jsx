@@ -13,10 +13,12 @@ import {
 } from './ContactForm.styled';
 
 const ContactForm = ({ onSubmitData, contacts }) => {
-  const handleSubmit = (values, { resetForm }) => {
+  const onHandleSubmit = (values, { resetForm }) => {
+    //перевіряємо чи існують вже контакти з таким же іменем, що ввів користувач в формі.
     const isIncluded = contacts.some(
       contact => contact.name.toLowerCase() === values.name.toLowerCase().trim()
     );
+    //якщо так то виводимо повідомлення
     if (isIncluded) {
       alert(`${values.name.trim()} is already in contacts`);
       return;
@@ -26,6 +28,7 @@ const ContactForm = ({ onSubmitData, contacts }) => {
       number: values.number.trim(),
       id: nanoid(),
     };
+    //відправляє дані, введені користувачем, до батьківського компонента
     onSubmitData(obj);
     resetForm();
   };
@@ -33,13 +36,14 @@ const ContactForm = ({ onSubmitData, contacts }) => {
   return (
     <Formik
       initialValues={{ name: '', number: '' }}
-      onSubmit={handleSubmit}
+      onSubmit={onHandleSubmit}
       validationSchema={ContactSchema}
     >
       {({ values, handleChange, handleSubmit }) => (
+        // handleChange, handleSubmit встроєні функціі Formik
         <Form onSubmit={handleSubmit}>
           <Label>
-            <h2>Name</h2>
+            <SubtitleForm>Name</SubtitleForm>
             <Field
               type="text"
               name="name"
