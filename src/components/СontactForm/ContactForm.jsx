@@ -1,6 +1,6 @@
-import React from 'react';
 import { Formik } from 'formik';
 import { nanoid } from 'nanoid';
+import PropTypes from 'prop-types';
 
 import { ContactSchema } from '../../utils/ContactSchema';
 import {
@@ -71,4 +71,8 @@ const ContactForm = ({ onSubmitData, contacts }) => {
   );
 };
 
+ContactForm.propTypes = {
+  onSubmitData: PropTypes.func.isRequired,
+  contacts: PropTypes.array.isRequired,
+};
 export { ContactForm };
