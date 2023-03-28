@@ -9,12 +9,34 @@ import {
   SectionSubTitle,
 } from './App.styled';
 
+import { loadContacts, saveContacts } from '../utils/LocalStorageFunctions';
 export class App extends Component {
   state = {
     contacts: [],
     filter: '',
   };
 
+  // отримуємо дані з локального сховища за допомогою функції loadContacts()
+  componentDidMount() {
+    this.setState({ contacts: loadContacts('contacts') || [] });
+  }
+
+  //зберігаємо дані контактів в локальному сховищі за допомогою функції saveContacts.
+  // Функція saveContacts перетворює дані контактів у формат JSON та зберігає їх у локальному сховищі браузера.
+  componentDidUpdate(prevProps, prevState) {
+    // Перевірка, чи змінився стан компонента
+    if (this.state.contacts !== prevState.contacts) {
+      // Перевірка, чи змінилися необхідні дані
+      const shouldUpdateContacts =
+        this.state.contacts.length !== prevState.contacts.length;
+      // console.log(this.state.contacts.length);
+      // console.log(prevState.contacts.length);
+      //якщо так то зберігаємо дані
+      if (shouldUpdateContacts) {
+        saveContacts('contacts', this.state.contacts);
+      }
+    }
+  }
   //додаємо новий контакт в список контактів
   //приймаємо об'єкт obj, який містить інформацію про новий контакт.
   //оновлюємо стан компонента, використовуючи this.setState()
