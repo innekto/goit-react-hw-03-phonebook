@@ -13,7 +13,7 @@ import {
 } from './ContactForm.styled';
 
 const ContactForm = ({ onSubmitData, contacts }) => {
-  const onHandleSubmit = (values, { resetForm }) => {
+  const onHandleSubmit = (values, { resetForm, setSubmitting }) => {
     //перевіряємо чи існують вже контакти з таким же іменем, що ввів користувач в формі.
     const isIncluded = contacts.some(
       contact => contact.name.toLowerCase() === values.name.toLowerCase().trim()
@@ -21,6 +21,7 @@ const ContactForm = ({ onSubmitData, contacts }) => {
     //якщо так то виводимо повідомлення
     if (isIncluded) {
       alert(`${values.name.trim()} is already in contacts`);
+      setSubmitting(false);
       return;
     }
     const obj = {
@@ -28,9 +29,12 @@ const ContactForm = ({ onSubmitData, contacts }) => {
       number: values.number.trim(),
       id: nanoid(),
     };
-    //відправляє дані, введені користувачем, до батьківського компонента
-    onSubmitData(obj);
-    resetForm();
+    //відправляє дані, вве дені користувачем, до батьківського компонента
+    setTimeout(() => {
+      onSubmitData(obj);
+      resetForm();
+      setSubmitting(false);
+    }, 1000);
   };
 
   return (
@@ -39,7 +43,7 @@ const ContactForm = ({ onSubmitData, contacts }) => {
       onSubmit={onHandleSubmit}
       validationSchema={ContactSchema}
     >
-      {({ values, handleChange, handleSubmit }) => (
+      {({ values, handleChange, handleSubmit, isSubmitting }) => (
         // handleChange, handleSubmit встроєні функціі Formik
         <Form onSubmit={handleSubmit}>
           <Label>
@@ -51,7 +55,7 @@ const ContactForm = ({ onSubmitData, contacts }) => {
               onChange={handleChange}
               required
             />
-            <ErrorMessage name="name" component="div" />
+            <ErrorMessage name="name" component="span" />
           </Label>
           <Label>
             <SubtitleForm>Number</SubtitleForm>
@@ -62,9 +66,11 @@ const ContactForm = ({ onSubmitData, contacts }) => {
               onChange={handleChange}
               required
             />
-            <ErrorMessage name="number" component="div" />
+            <ErrorMessage name="number" component="span" />
           </Label>
-          <FormButton type="submit">Add contact</FormButton>
+          <FormButton type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Adding...' : 'Add contact'}
+          </FormButton>
         </Form>
       )}
     </Formik>
