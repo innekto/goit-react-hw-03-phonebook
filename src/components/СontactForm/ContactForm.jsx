@@ -34,7 +34,7 @@ const ContactForm = ({ onSubmitData, contacts }) => {
       onSubmitData(obj);
       resetForm();
       setSubmitting(false);
-    }, 1000);
+    }, 500);
   };
 
   return (
